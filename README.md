@@ -3,8 +3,11 @@ KillMinds
 =========== 
 
 Copyright Gameblabla, 2016
+
 Sound Effects by Jesus Lastra, licensed under the Creative Commons Attribution-ShareAlike version 3.0 license.
+
 The game code is licensed under the GAMEBLABLA's VIDEO GAME PUBLIC LICENSE, a custom license.
+
 Read the file COPYRIGHT for more details.
 
 Killminds is a puzzle game made by gameblabla, first released for the 3DO in 2013.
