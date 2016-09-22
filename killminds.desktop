@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+X-Nemo-Application-Type=generic
+Icon=harbour-killminds
+Exec=harbour-killminds
+Name=KillMinds

@@ -1,0 +1,17 @@
+CC = gcc-6
+
+CFLAGS = -O2 -I./WRAPPER -I/usr/include/SDL2 -DHOMEDIR
+LDFLAGS = -lSDL2 -lm -lSDL2_mixer
+DEFINES = -Wall
+OUTPUT = killminds_sdl2
+
+SOURCES = main.c wrapper.c
+OBJS = ${SOURCES:.c=.o}
+
+${OUTPUT}:${OBJS}
+	${CC} -o ${OUTPUT} ${SOURCES} ${CFLAGS} ${LDFLAGS} ${DEFINES} 
+	
+clean:
+	rm *.o
+	rm ./SDL_mixer/*.o
+	rm ${OUTPUT}
