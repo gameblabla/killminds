@@ -1,6 +1,7 @@
 *~
 *.o
 *.elf
+*.zip
 gorilla-audio/src/*.o
 gorilla-audio/src/common/*.o
 gorilla-audio/src/devices/*.o

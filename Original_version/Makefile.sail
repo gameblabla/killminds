@@ -2,7 +2,7 @@ CC = gcc
 
 CFLAGS = -O2 -I/usr/include/SDL2 -DSELFISHOS -DHOMEDIR
 #-DENABLE_OPENAL -Igorilla-audio/include
-LDFLAGS = -lSDL2 -lGLESv2 -lm -lc
+LDFLAGS = -lSDL2 -lm -s -flto
 DEFINES = -Wall
 OUTPUT = harbour-killminds
 
@@ -16,11 +16,10 @@ SOURCES = main.c wrapper_sail.c
 OBJS = ${SOURCES:.c = .o}
 
 ${OUTPUT}:${OBJS}
-	${CC} -o ${OUTPUT} ${SOURCES} ${CFLAGS} ${LDFLAGS} ${DEFINES} 
+	${CC} -o ${OBJS} ${SOURCES} ${CFLAGS} ${LDFLAGS} ${DEFINES} 
 	
 clean:
-	rm *.o
-	rm ${OUTPUT}
+	rm *.o ${OUTPUT}
 
 install:
 	chmod +x ${OUTPUT}

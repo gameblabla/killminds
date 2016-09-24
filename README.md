@@ -38,5 +38,6 @@ On Android, it uses JNI : SDL2 and SDL2_mixer are compiled as shared libraries.
 Then, it is simply a matter of using ndk-build and packing things up with ant.
 
 For Sailfish OS, you have everything you need up but you need to have the official SailfishOS SDK.
-In the MerSDK vm, use the commands from "Compilation_sailfish.txt" and you should get a RPM file
-in a newly-created folder RPMS.
+There are some bugs for the ARM binary however...
+Run sb2 -t SailfishOS-armv7hl make -f Makefile.sail before using the commands from "Compilation_sailfish.txt".
+You should get a RPM file in a newly-created folder RPMS.

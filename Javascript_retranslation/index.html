@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+	<title>KillMinds HTML5</title>
+	  <style type="text/css">	
+		#content browser
+		{
+			margin-right:-14px!important;
+			overflow-y:scroll;
+			overflow-x:hidden;
+		}
+        html, body {
+			overflow: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+			padding: 0;
+			margin: 0;
+		}	
+		#touchArea {
+			overflow: hidden;
+			position: static; 
+			margin: 0;
+			left: 0;  
+			right: 0;
+			bottom: 0; 
+			top: 0;
+			padding: 0;
+			margin: 0;
+            width: 320px;
+            height: 480px;
+		}	
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+			padding: 0;
+			margin: 0;
+			image-rendering: optimizeSpeed;
+			image-rendering: -moz-crisp-edges;
+			image-rendering: -webkit-optimize-contrast;
+			image-rendering: -o-crisp-edges;
+			image-rendering: pixelated;
+			-ms-interpolation-mode: nearest-neighbor;
+        }
+	  </style>
+</head>
+		<a href="https://github.com/gameblabla/killminds/raw/master/COPYRIGHT" rel="jslicense"></a>
+		<script language="javascript" src="buzz.js"></script>
+        <script language="javascript" src="jquery.js"></script>
+		<script language="javascript" src="touchevent.js"></script>
+		<script language="javascript" src="game.js"></script>
+<body>
+		<div id="touchArea">
+			<canvas id="canvas" width="320" height="480" 
+			style="position: absolute; left: 0;  right: 0; bottom: 0; top: 0; topmargin = 0; leftmargin=0; z-index: 0;" moz-opaque>
+			</canvas>
+		</div>
+	</body>
+</html>
