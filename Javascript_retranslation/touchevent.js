@@ -33,12 +33,9 @@ $touchArea.on('touchmove mousemove',function (e){
     var pointer = getPointerEvent(e);
     currX = pointer.pageX;
     currY = pointer.pageY;
-    
-	poss_x = currX*(320/window.innerWidth);
+	poss_x = currX*(320/$(window).width());
 	poss_x = poss_x | 0;
-	poss_y = currY*(480/window.innerHeight);
+	poss_y = currY*(480/$(window).height());
 	poss_y = poss_y | 0;
-
-   
 });
 });//]]> 

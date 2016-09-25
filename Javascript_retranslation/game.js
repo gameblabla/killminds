@@ -67,6 +67,8 @@ var isoggsupported = 0;
 var keyboard = 0;
 var score_togive;
 
+var touch_state = 0, touch_state_time = 0;
+
 window.onload = function() 
 {
 	var i;
@@ -149,6 +151,7 @@ window.onload = function()
 			 * It's much faster than clear_rect
 			*/
 			first_layer.height = first_layer.height;
+			touch();
 			
 			switch(game_mode)
 			{
@@ -180,6 +183,10 @@ window.onload = function()
 	} (window));
 };  
 
+/*
+ * Controls
+*/
+
 window.addEventListener("keydown", function(evt) {
 	keyboard = evt.keyCode;
 }, this);
@@ -188,6 +195,41 @@ window.addEventListener("keyup", function(evt) {
 	if (keyboard > 0) keyboard = 0;
 }, this);
 
+function touch()
+{
+	switch(touch_state)
+	{
+		case 0:
+			if (tapped == 1)
+			{
+				touch_state = 1;
+			}
+		break;
+		case 1:
+			touch_state_time++;
+			if (touch_state_time > 0)
+			{
+				touch_state = 2;
+				touch_state_time = 0;
+			}
+		break;
+		case 2:
+			if (tapped == 0)
+			{
+				touch_state = 3;
+				touch_state_time = 0;
+			}
+		break;
+		case 3:
+			touch_state_time++;
+			if (touch_state_time > 1)
+			{
+				touch_state = 0;
+				touch_state_time = 0;
+			}
+		break;
+	}
+}
 
 function Put_sprite(a, b, c, d, e, f)
 {
@@ -196,7 +238,7 @@ function Put_sprite(a, b, c, d, e, f)
 
 function Titlescreen()
 {
-	if (tapped == 1 || (keyboard == 13 || keyboard == 32))
+	if (touch_state == 1 || (keyboard == 13 || keyboard == 32))
 	{
 		go_ingame();
 	}
@@ -206,7 +248,8 @@ function Show_highscore()
 {
 	for(i=0;i<7;i++)
 	{
-		Put_sprite(5, 55+(i*30), 360, 30, 30, highscore_show[i], 3);
+		//Put_sprite(5, 55+(i*30), 360, 30, 30, highscore_show[i], 3);
+		background.drawImage(img_memory[5], 30*highscore_show[i], 0, 30, 30, 55+(i*30), 360, 30, 30);
 	}
 	
 	if (highscore > 10000)
@@ -563,7 +606,7 @@ function Reload_time()
 
 function touch_sqr(x, x2, y, y2)
 {
-	if (poss_x > x && poss_x < x2 && poss_y > y && poss_y < y2 && (tapped == 1 || (keyboard == 13 || keyboard == 32)))
+	if (poss_x > x && poss_x < x2 && poss_y > y && poss_y < y2 && (touch_state == 1 || (keyboard == 13 || keyboard == 32)))
 		return 1;
 	else
 		return 0;
@@ -622,7 +665,7 @@ function Show_Instructions()
 			inst_scr_alpha = inst_scr_alpha - inst_scr_alpha;
 		}
 	}
-	if (inst_scr_alpha < 0.01) 
+	if (inst_scr_alpha < 0.01 || touch_state == 1) 
 	{
 		game_mode = 1;
 	}
@@ -708,10 +751,10 @@ function Put_squares()
  	var i;
 	for (i=0;i<4;i++)
 	{
-		if (left_spot[i] != 0) Put_sprite(2, 22, 201, 80, 76, left_spot[i]);
-		if (right_spot[i] != 0) Put_sprite(2, 222, 201, 80, 76, right_spot[i]);
-		if (up_spot[i] != 0) Put_sprite(2, 122, 101, 80, 76, up_spot[i]);
-		if (down_spot[i] != 0) Put_sprite(2, 122, 301, 80, 76, down_spot[i]);
+		if (left_spot[i] != 0) background.drawImage(img_memory[2], 80*left_spot[i], 0, 80, 76, 22, 201, 80, 76);
+		if (right_spot[i] != 0) background.drawImage(img_memory[2], 80*right_spot[i], 0, 80, 76, 222, 201, 80, 76);
+		if (up_spot[i] != 0) background.drawImage(img_memory[2], 80*up_spot[i], 0, 80, 76, 122, 101, 80, 76);
+		if (down_spot[i] != 0) background.drawImage(img_memory[2], 80*down_spot[i], 0, 80, 76, 122, 301, 80, 76);
 	}
 }
 
@@ -723,8 +766,8 @@ function Put_score_lives()
 	//	Score_0 ,..., Score_6
 	for (i=0;i<7;i++)
 	{
-		Put_sprite(5, 64+(i*30), 388, 30, 30, score_showed[i]);
-		//background.drawImage(img_memory[5], score_showed[i]*10, 0, 30, 30, 64+(i*30), 388, 30, 30);
+		//Put_sprite(5, 64+(i*30), 388, 30, 30, score_showed[i]);
+		background.drawImage(img_memory[5], score_showed[i]*30, 0, 30, 30, 64+(i*30), 388, 30, 30);
 	}
 	
 	//	Lives_spr
