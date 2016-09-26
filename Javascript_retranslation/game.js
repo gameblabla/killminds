@@ -68,12 +68,15 @@ var keyboard = 0;
 var score_togive;
 
 var touch_state = 0, touch_state_time = 0;
+var hammertime;
+
 
 window.onload = function() 
 {
 	var i;
 	first_layer = document.getElementById('canvas');
 	background = first_layer.getContext('2d'); // A layer for the background
+	mc = new Hammer(first_layer);
 	
 	for (i=0;i<7;i++)
 	{
@@ -142,15 +145,12 @@ window.onload = function()
 	img_memory[15].src = 'data/copyright.png';
 	img_memory[16].src = 'data/back.png';
 
+
+
 	(function (window) 
 	{
 		function mainloop() 
 		{
-			/* 
-			 * This is used to clear the canvas 
-			 * It's much faster than clear_rect
-			*/
-			first_layer.height = first_layer.height;
 			touch();
 			
 			switch(game_mode)
@@ -177,11 +177,27 @@ window.onload = function()
 					Show_Square();
 				break;
 			}
+			tapped = 0;
 	    }
-	    
-		window.setInterval(mainloop, precalculed_fps); // 30fps	
+	    requestAnimationFrame(mainloop);
+		window.setInterval(mainloop, precalculed_fps); // 60 fps	
+		
 	} (window));
+
+	mc.on("tap", function(e) 
+	{
+		var currX, currY;
+		currX = e.pointers[0].layerX;
+		currY = e.pointers[0].layerY;
+		poss_x = (currX*(320/$(first_layer).width())) | 0;
+		poss_y = (currY*(480/$(first_layer).height())) | 0;
+		tapped = 1;
+	});
+
 };  
+
+
+
 
 /*
  * Controls
@@ -246,11 +262,18 @@ function Titlescreen()
 
 function Show_highscore()
 {
-	for(i=0;i<7;i++)
+	/*for(i=0;i<7;i++)
 	{
 		//Put_sprite(5, 55+(i*30), 360, 30, 30, highscore_show[i], 3);
 		background.drawImage(img_memory[5], 30*highscore_show[i], 0, 30, 30, 55+(i*30), 360, 30, 30);
-	}
+	}*/
+	background.drawImage(img_memory[5], highscore_show[0]*30, 0, 30, 30, 55, 360, 30, 30);
+	background.drawImage(img_memory[5], highscore_show[1]*30, 0, 30, 30, 85, 360, 30, 30);
+	background.drawImage(img_memory[5], highscore_show[2]*30, 0, 30, 30, 115, 360, 30, 30);
+	background.drawImage(img_memory[5], highscore_show[3]*30, 0, 30, 30, 145, 360, 30, 30);
+	background.drawImage(img_memory[5], highscore_show[4]*30, 0, 30, 30, 175, 360, 30, 30);
+	background.drawImage(img_memory[5], highscore_show[5]*30, 0, 30, 30, 205, 360, 30, 30);
+	background.drawImage(img_memory[5], highscore_show[6]*30, 0, 30, 30, 235, 360, 30, 30);
 	
 	if (highscore > 10000)
 		background.drawImage(img_memory[3], 0, 0, 17, 16, 260, 400, 17, 16);
@@ -384,7 +407,7 @@ function lose_a_life()
 // Generate a random number
 function reset_case() 
 {
-	var good, i;
+	var good, i, il;
 
 	good = 0;
 
@@ -418,7 +441,8 @@ function reset_case()
 		}
 	}
 	
-	for(i=0;i<4;i++)
+	//for(i=0;i<4;i++)
+	for (i=0, il=4; i<il; i++)
 	{
 		if (square_position == 1+(4*i)) sound[7].play();
 		if (square_position == 5+(4*i)) sound[8].play();
@@ -436,12 +460,12 @@ function reset_case()
 
 function Move_Square()
 {
-	var i;
+	var i, il;
 	var sqr_score_filled;
 	var canmove_square;
 	
 	// Player can play after some ms (or right now if instructions are shown)
-	canmove_square = (time_game < 93 && start_beginning == 0) || (time_game == 100 && start_beginning > 0);
+	canmove_square = (time_game < 94 && start_beginning == 0) || (time_game == 100 && start_beginning > 0);
 	
 	if (time_game < 1)	// Player lose a live after running out of time
 	{
@@ -452,7 +476,8 @@ function Move_Square()
 	{
 		if (touch_sqr(100, 212, 97, 188) || keyboard == 38)
 		{
-			for(i=0;i<4;i++)
+			for (i=0, il=4; i<il; i++)
+			//for(i=0;i<4;i++)
 			{
 				if ((square_position == 1+i || square_position == 5+i || square_position == 9+i || square_position == 13+i))
 				{
@@ -472,7 +497,8 @@ function Move_Square()
 			if (up_spot[0] > 0 && up_spot[1] > 0 && up_spot[2] > 0 && up_spot[3] > 0)
 			{
 				sqr_score_filled = check_square_score(up_spot[0],up_spot[1],up_spot[2],up_spot[3]);
-				for(i=0;i<4;i++) 
+				for (i=0, il=4; i<il; i++)
+				//for(i=0;i<4;i++) 
 				{
 					up_spot[i] = 0;
 				}
@@ -486,7 +512,8 @@ function Move_Square()
 		else if (touch_sqr(100, 212, 292, 391) || keyboard == 40)
 		{
 
-			for(i=0;i<4;i++)
+			for (i=0, il=4; i<il; i++)
+			//for(i=0;i<4;i++)
 			{
 				if ((square_position == 1+i || square_position == 5+i || square_position == 9+i || square_position == 13+i))
 				{
@@ -506,7 +533,8 @@ function Move_Square()
 			if (down_spot[0] > 0 && down_spot[1] > 0 && down_spot[2] > 0 && down_spot[3] > 0)
 			{
 				sqr_score_filled = check_square_score(down_spot[0],down_spot[1],down_spot[2],down_spot[3]);
-				for(i=0;i<4;i++) 
+				for (i=0, il=4; i<il; i++)
+				//for(i=0;i<4;i++) 
 				{
 					down_spot[i] = 0;
 				}
@@ -519,8 +547,8 @@ function Move_Square()
 	
 		else if (touch_sqr(4, 98, 193, 286)  || keyboard == 37)
 		{
-			
-			for(i=0;i<4;i++)
+			for (i=0, il=4; i<il; i++)
+			//for(i=0;i<4;i++)
 			{
 				if ((square_position == 1+i || square_position == 5+i || square_position == 9+i || square_position == 13+i))
 				{
@@ -540,7 +568,8 @@ function Move_Square()
 			if (left_spot[0] > 0 && left_spot[1] > 0 && left_spot[2] > 0 && left_spot[3] > 0)
 			{
 				sqr_score_filled = check_square_score(left_spot[0],left_spot[1],left_spot[2],left_spot[3]);
-				for(i=0;i<4;i++) 
+				for (i=0, il=4; i<il; i++)
+				//for(i=0;i<4;i++) 
 				{
 					left_spot[i] = 0;
 				}
@@ -553,8 +582,8 @@ function Move_Square()
 
 		else if (touch_sqr(212, 317, 185, 286) || keyboard == 39)
 		{
-			
-				for(i=0;i<4;i++)
+				for (i=0, il=4; i<il; i++)
+				//for(i=0;i<4;i++)
 				{
 					if ((square_position == 1+i || square_position == 5+i || square_position == 9+i || square_position == 13+i))
 					{
@@ -574,7 +603,8 @@ function Move_Square()
 				if (right_spot[0] > 0 && right_spot[1] > 0 && right_spot[2] > 0 && right_spot[3] > 0)
 				{
 					sqr_score_filled = check_square_score(right_spot[0],right_spot[1],right_spot[2],right_spot[3]);
-					for(i=0;i<4;i++) 
+					for (i=0, il=4; i<il; i++)
+					//for(i=0;i<4;i++) 
 					{
 						right_spot[i] = 0;
 					}
@@ -615,7 +645,7 @@ function touch_sqr(x, x2, y, y2)
 function check_square_score(a, b, c, d)
 {
 	// Check if all squares are green
-	var i;
+	var i, il;
 	var square_tmp = Array(4);
 	
 	score_togive = 0;
@@ -625,7 +655,8 @@ function check_square_score(a, b, c, d)
 	square_tmp[2] = c;
 	square_tmp[3] = d;
 	
-	for(i=0;i<3;i++)
+	for (i=0, il=3; i<il; i++)
+	//for(i=0;i<3;i++)
 	{
 		if (square_tmp[0] == 1+(4*i) && square_tmp[1] == 2+(4*i) && square_tmp[2] == 3+(4*i) && square_tmp[3] == 4+(4*i))
 		{
@@ -748,27 +779,32 @@ function Put_slots()
 
 function Put_squares()
 {
- 	var i;
-	for (i=0;i<4;i++)
+ 	var i, il;
+	//for (i=0;i<4;i++)
+	for (i=0, il=4; i<il; i++)
 	{
-		if (left_spot[i] != 0) background.drawImage(img_memory[2], 80*left_spot[i], 0, 80, 76, 22, 201, 80, 76);
-		if (right_spot[i] != 0) background.drawImage(img_memory[2], 80*right_spot[i], 0, 80, 76, 222, 201, 80, 76);
-		if (up_spot[i] != 0) background.drawImage(img_memory[2], 80*up_spot[i], 0, 80, 76, 122, 101, 80, 76);
-		if (down_spot[i] != 0) background.drawImage(img_memory[2], 80*down_spot[i], 0, 80, 76, 122, 301, 80, 76);
+		if (left_spot[i] > 0) background.drawImage(img_memory[2], 80*left_spot[i], 0, 80, 76, 22, 201, 80, 76);
+		if (right_spot[i] > 0) background.drawImage(img_memory[2], 80*right_spot[i], 0, 80, 76, 222, 201, 80, 76);
+		if (up_spot[i] > 0) background.drawImage(img_memory[2], 80*up_spot[i], 0, 80, 76, 122, 101, 80, 76);
+		if (down_spot[i] > 0) background.drawImage(img_memory[2], 80*down_spot[i], 0, 80, 76, 122, 301, 80, 76);
 	}
 }
 
 
 function Put_score_lives()
 {
-	var i;
-
-	//	Score_0 ,..., Score_6
+	/*var i;
 	for (i=0;i<7;i++)
 	{
-		//Put_sprite(5, 64+(i*30), 388, 30, 30, score_showed[i]);
 		background.drawImage(img_memory[5], score_showed[i]*30, 0, 30, 30, 64+(i*30), 388, 30, 30);
-	}
+	}*/
+	background.drawImage(img_memory[5], score_showed[0]*30, 0, 30, 30, 64, 388, 30, 30);
+	background.drawImage(img_memory[5], score_showed[1]*30, 0, 30, 30, 94, 388, 30, 30);
+	background.drawImage(img_memory[5], score_showed[2]*30, 0, 30, 30, 124, 388, 30, 30);
+	background.drawImage(img_memory[5], score_showed[3]*30, 0, 30, 30, 154, 388, 30, 30);
+	background.drawImage(img_memory[5], score_showed[4]*30, 0, 30, 30, 184, 388, 30, 30);
+	background.drawImage(img_memory[5], score_showed[5]*30, 0, 30, 30, 214, 388, 30, 30);
+	background.drawImage(img_memory[5], score_showed[6]*30, 0, 30, 30, 244, 388, 30, 30);
 	
 	//	Lives_spr
 	background.drawImage(img_memory[4], 120, 424);
