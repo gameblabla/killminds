@@ -145,8 +145,6 @@ window.onload = function()
 	img_memory[15].src = 'data/copyright.png';
 	img_memory[16].src = 'data/back.png';
 
-
-
 	(function (window) 
 	{
 		function mainloop() 
