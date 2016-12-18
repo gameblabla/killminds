@@ -10,33 +10,40 @@
 	See the GAMEBLABLA's VIDEO GAME PUBLIC LICENSE for more details.
 */
 
-#define title_img "title.bmp"
-#define all_img "all.bmp"
-#define ready_img "ready.bmp"
-#define score_img "score.bmp"
-#define start_img "startbutton.bmp"
-#define background_img "back.bmp"
+#define title_img "data/title.bmp"
+#define all_img "data/all.bmp"
+#define ready_img "data/ready.bmp"
+#define score_img "data/score.bmp"
+#define start_img "data/startbutton.bmp"
+#define background_img "data/back.bmp"
 
-#define heart_img "heart.bmp"
-#define block_up_img "block_up.bmp"
-#define block_left_img "block_left.bmp"
-#define block_right_img "block_right.bmp"
-#define block_down_img "block_down.bmp"
-#define block_img "block.bmp"
-#define hand_anim_img "hand_anim.bmp"
-#define inst_img "inst.bmp"
-#define trophee_img "trophees.bmp"
-#define copyright_img "copyright.bmp"
-	
-#define gameover_sfx "gameover.wav"
-#define miss_sfx "miss.wav"
-#define move_sfx "move1.wav"
+#define heart_img "data/heart.bmp"
+#define block_up_img "data/block_up.bmp"
+#define block_left_img "data/block_left.bmp"
+#define block_right_img "data/block_right.bmp"
+#define block_down_img "data/block_down.bmp"
+#define block_img "data/block.bmp"
+#define hand_anim_img "data/hand_anim.bmp"
+#define inst_img "data/inst.bmp"
+#define trophee_img "data/trophees.bmp"
+#define copyright_img "data/copyright.bmp"
+#define font_img "data/font.bmp"
 
-#define move2_sfx "move2.wav"
-#define move3_sfx "move3.wav"
-#define move4_sfx "move4.wav"
+#define gameover_sfx "data/gameover.wav"
+#define miss_sfx "data/miss.wav"
+#define move_sfx "data/move1.wav"
 
-#define fullsqr_sfx "fullsquare.wav"
+#define move2_sfx "data/move2.wav"
+#define move3_sfx "data/move3.wav"
+#define move4_sfx "data/move4.wav"
+
+#define fullsqr_sfx "data/fullsquare.wav"
+
+#define upleft_sfx "data/upleft.wav"
+#define upright_sfx "data/upright.wav"
+#define downleft_sfx "data/downleft.wav"
+#define downright_sfx "data/downright.wav"
+
 
 // Initialize game
 void InitializeGame();
@@ -79,7 +86,9 @@ void Update_highscore();
 
 short rand_a_b(short a, short b);
 unsigned char touch_sqr(unsigned short x, unsigned short x2, unsigned short y, unsigned short y2);
-unsigned short check_square_score(unsigned char* square_tmp);
+unsigned short check_square_score(unsigned char* square_tmp, unsigned char spot);
+
+void Set_Show_Score(unsigned int score, unsigned char spot);
 
 void Put_hands();
 void Put_squares();

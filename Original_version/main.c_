@@ -56,7 +56,7 @@ struct level_struct
 
 struct sqr
 {
-	unsigned char position;
+	unsigned char position[2];
 	unsigned char color;
 	unsigned char chain;
 } square;
@@ -99,7 +99,7 @@ struct text_str
 int main(int argc, char* argv[])
 {
 	InitializeGame();
-	srand(time(NULL));
+	srand(time(0));
 
 	while (!done)
 	{
@@ -135,7 +135,8 @@ void InitializeGame()
 	}
 	
 	Load_score();
-	reset_case();
+	square.position[0] = reset_case();
+	square.position[1] = reset_case();
 }
 
 
@@ -320,7 +321,7 @@ void Show_Square()
 		
 		case 0:
 			// Show the square you're holding
-			frame = square.position;
+			frame = square.position[0];
 		break;
 	}
 
@@ -334,6 +335,9 @@ void Put_slots()
 	Put_image(9, 118+100, 197, 2);
 	Put_image(10, 118, 197-100, 2);
 	Put_image(11, 118, 197+100, 2);
+	
+	Put_image(7, 264, 50, 1);
+	Put_sprite(2, 266, 52, 40, 38, square.position[1], 1);
 }
 
 void Put_score_lives()
@@ -560,6 +564,12 @@ void Reload_time()
 	}	
 }
 
+void Give_new_square()
+{
+	square.position[0] = square.position[1];
+	square.position[1] = reset_case();	
+}
+
 /*
  *
  * Look at this monstrosity... 
@@ -578,7 +588,7 @@ void Move_Square()
 	if (time_game < 1)	// Player lose a live after running out of time
 	{
 		lose_a_life();
-		reset_case();
+		Give_new_square();
 	}
 	else if (canmove_square)
 	{
@@ -586,13 +596,13 @@ void Move_Square()
 		{
 			for(i=0;i<4;i++)
 			{
-				if ((square.position == 1+i || square.position == 5+i || square.position == 9+i || square.position == 13+i))
+				if ((square.position[0] == 1+i || square.position[0] == 5+i || square.position[0] == 9+i || square.position[0] == 13+i))
 				{
 					if (up_spot[i] == 0)
 					{
 						Play_SFX(3);
 						if (start_beginning > 0) start_beginning--;
-						up_spot[i] = square.position;
+						up_spot[i] = square.position[0];
 					}
 					else if (up_spot[i] > 0)
 					{
@@ -612,7 +622,7 @@ void Move_Square()
 				calcul_score();
 			}
 
-			reset_case();
+				Give_new_square();
 		}
 
 		else if (BUTTON.DOWN || touch_sqr(100, 212, 292, 391))
@@ -620,13 +630,13 @@ void Move_Square()
 
 			for(i=0;i<4;i++)
 			{
-				if ((square.position == 1+i || square.position == 5+i || square.position == 9+i || square.position == 13+i))
+				if ((square.position[0] == 1+i || square.position[0] == 5+i || square.position[0] == 9+i || square.position[0] == 13+i))
 				{
 					if (down_spot[i] == 0)
 					{
 						Play_SFX(4);
 						if (start_beginning > 0) start_beginning--;
-						down_spot[i] = square.position;
+						down_spot[i] = square.position[0];
 					}
 					else if (down_spot[i] > 0)
 					{
@@ -646,7 +656,7 @@ void Move_Square()
 				calcul_score();
 			}
 
-			reset_case();
+				Give_new_square();
 		}
 	
 		else if (BUTTON.LEFT || touch_sqr(4, 98, 193, 286))
@@ -654,13 +664,13 @@ void Move_Square()
 			
 			for(i=0;i<4;i++)
 			{
-				if ((square.position == 1+i || square.position == 5+i || square.position == 9+i || square.position == 13+i))
+				if ((square.position[0] == 1+i || square.position[0] == 5+i || square.position[0] == 9+i || square.position[0] == 13+i))
 				{
 					if (left_spot[i] == 0)
 					{
 						Play_SFX(5);
 						if (start_beginning > 0) start_beginning--;
-						left_spot[i] = square.position;
+						left_spot[i] = square.position[0];
 					}
 					else if (left_spot[i] > 0)
 					{
@@ -680,7 +690,7 @@ void Move_Square()
 				calcul_score();
 			}
 
-			reset_case();
+				Give_new_square();
 		}
 
 		else if (BUTTON.RIGHT  || touch_sqr(212, 317, 185, 286))
@@ -688,13 +698,13 @@ void Move_Square()
 			
 				for(i=0;i<4;i++)
 				{
-					if ((square.position == 1+i || square.position == 5+i || square.position == 9+i || square.position == 13+i))
+					if ((square.position[0] == 1+i || square.position[0] == 5+i || square.position[0] == 9+i || square.position[0] == 13+i))
 					{
 						if (right_spot[i] == 0)
 						{
 							Play_SFX(6);
 							if (start_beginning > 0) start_beginning--;
-							right_spot[i] = square.position;
+							right_spot[i] = square.position[0];
 						}
 						else if (right_spot[i] > 0)
 						{
@@ -714,15 +724,16 @@ void Move_Square()
 					calcul_score();
 				}
 
-			reset_case();
+				Give_new_square();
 		}
 	}
 
 }
 
 // Generate a random number
-short reset_case() 
+unsigned char reset_case() 
 {
+	unsigned char pos;
 	unsigned char good, i;
 
 	good = 0;
@@ -733,21 +744,21 @@ short reset_case()
 	// If good = 1 then it means it found a good combinaison
 	while (!good)
 	{
-		square.position = rand_a_b(1,12);
+		pos = rand_a_b(1,12);
 		
-		if (up_spot[0] > 0 && right_spot[0] > 0 && left_spot[0] > 0 && down_spot[0] && (square.position == 1 || square.position == 5 || square.position == 9 || square.position == 13)) 
+		if (up_spot[0] > 0 && right_spot[0] > 0 && left_spot[0] > 0 && down_spot[0] && (pos == 1 || pos == 5 || pos == 9 || pos == 13)) 
 		{
 			good = 0;
 		}
-		else if (up_spot[1] > 0 && right_spot[1] > 0 && left_spot[1] > 0 && down_spot[1] && (square.position == 2 || square.position == 6 || square.position == 10 || square.position == 14)) 
+		else if (up_spot[1] > 0 && right_spot[1] > 0 && left_spot[1] > 0 && down_spot[1] && (pos == 2 || pos == 6 || pos == 10 || pos == 14)) 
 		{
 			good = 0;
 		}
-		else if (up_spot[2] > 0 && right_spot[2] > 0 && left_spot[2] > 0 && down_spot[2] && (square.position == 3 || square.position == 7 || square.position == 11 || square.position == 15)) 
+		else if (up_spot[2] > 0 && right_spot[2] > 0 && left_spot[2] > 0 && down_spot[2] && (pos == 3 || pos == 7 || pos == 11 || pos == 15)) 
 		{
 			good = 0;
 		}
-		else if (up_spot[3] > 0 && right_spot[3] > 0 && left_spot[3] > 0 && down_spot[3] && (square.position == 4 || square.position == 8 || square.position == 12 || square.position == 16)) 
+		else if (up_spot[3] > 0 && right_spot[3] > 0 && left_spot[3] > 0 && down_spot[3] && (pos == 4 || pos == 8 || pos == 12 || pos == 16)) 
 		{
 			good = 0;
 		}
@@ -759,17 +770,18 @@ short reset_case()
 	
 	for(i=0;i<4;i++)
 	{
-		if (square.position == 1+(4*i)) Play_SFX(8);
-		if (square.position == 5+(4*i)) Play_SFX(9);
-		if (square.position == 9+(4*i)) Play_SFX(10);
-		if (square.position == 13+(4*i)) Play_SFX(11);
+		if (pos == 1+(4*i)) Play_SFX(8);
+		if (pos == 5+(4*i)) Play_SFX(9);
+		if (pos == 9+(4*i)) Play_SFX(10);
+		if (pos == 13+(4*i)) Play_SFX(11);
 	}
 	
 
 	time_game = 100;
 	frame_gamemo = 0;
+	
 
-	return 1;
+	return pos;
 }
 
 void lose_a_life()
