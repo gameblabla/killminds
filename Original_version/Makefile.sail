@@ -16,7 +16,7 @@ SOURCES = main.c wrapper_sail.c
 OBJS = ${SOURCES:.c = .o}
 
 ${OUTPUT}:${OBJS}
-	${CC} -o ${OBJS} ${SOURCES} ${CFLAGS} ${LDFLAGS} ${DEFINES} 
+	${CC} -o ${OBJS} ${CFLAGS} ${LDFLAGS} ${DEFINES} 
 	
 clean:
 	rm *.o ${OUTPUT}
@@ -40,10 +40,7 @@ install:
 	cp ./data/back.bmp /home/deploy/installroot/usr/share/harbour-killminds/back.bmp
 	cp ./data/background.bmp /home/deploy/installroot/usr/share/harbour-killminds/background.bmp
 	cp ./data/block.bmp /home/deploy/installroot/usr/share/harbour-killminds/block.bmp
-	cp ./data/block_down.bmp /home/deploy/installroot/usr/share/harbour-killminds/block_down.bmp
-	cp ./data/block_left.bmp /home/deploy/installroot/usr/share/harbour-killminds/block_left.bmp
-	cp ./data/block_right.bmp /home/deploy/installroot/usr/share/harbour-killminds/block_right.bmp
-	cp ./data/block_up.bmp /home/deploy/installroot/usr/share/harbour-killminds/block_up.bmp
+	cp ./data/smallblock.bmp /home/deploy/installroot/usr/share/harbour-killminds/smallblock.bmp
 	cp ./data/copyright.bmp /home/deploy/installroot/usr/share/harbour-killminds/copyright.bmp
 	cp ./data/hand_anim.bmp /home/deploy/installroot/usr/share/harbour-killminds/hand_anim.bmp
 	cp ./data/heart.bmp /home/deploy/installroot/usr/share/harbour-killminds/heart.bmp

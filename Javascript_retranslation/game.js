@@ -70,6 +70,11 @@ var score_togive;
 var touch_state = 0, touch_state_time = 0;
 var hammertime;
 
+/* Up Score, shown when you get points */
+var upscore_y_text = 0;
+var upscore_time_flash = 0;
+var upscore_texttoshow_x = 0;
+var upscore_texttoshow_y = 0;
 
 window.onload = function() 
 {
@@ -135,15 +140,14 @@ window.onload = function()
 	img_memory[5].src = 'data/score.png';
 	img_memory[6].src = 'data/startbutton.png';
 	
-	img_memory[7].src = 'data/block_left.png';
-	img_memory[8].src = 'data/block_right.png';
-	img_memory[9].src = 'data/block_up.png';
-	img_memory[10].src = 'data/block_down.png';
+	img_memory[7].src = 'data/smallblock.png';
 	img_memory[11].src = 'data/block.png';
 	img_memory[13].src = 'data/hand_anim.png';
 	img_memory[14].src = 'data/inst.png';
 	img_memory[15].src = 'data/copyright.png';
 	img_memory[16].src = 'data/back.png';
+
+
 
 	(function (window) 
 	{
@@ -256,6 +260,31 @@ function Titlescreen()
 	{
 		go_ingame();
 	}
+}
+
+function Show_Up_Score()
+{
+	
+	if (time_score_up > 0)
+	{
+		if (upscore_time_flash < 5) Print_text(text_bonus_point.x, text_bonus_point.y+upscore_y_text, text_score_show); 
+		if (upscore_time_flash > 10) upscore_time_flash = 0;
+		
+		time_score_up++;
+		if (upscore_y_text > -16) upscore_y_text--;
+		else
+		{
+			upscore_time_flash++;
+		}
+		
+		if (time_score_up > 60) 
+		{
+			upscore_y_text = 0;
+			upscore_time_flash = 0;
+			time_score_up = 0;
+		}
+	}
+	
 }
 
 function Show_highscore()
@@ -463,7 +492,7 @@ function Move_Square()
 	var canmove_square;
 	
 	// Player can play after some ms (or right now if instructions are shown)
-	canmove_square = (time_game < 94 && start_beginning == 0) || (time_game == 100 && start_beginning > 0);
+	canmove_square = (time_game < 96 && start_beginning == 0) || (time_game == 100 && start_beginning > 0);
 	
 	if (time_game < 1)	// Player lose a live after running out of time
 	{
@@ -770,9 +799,9 @@ function Put_slots()
 {
 	background.drawImage(img_memory[7], 18, 197);
 	background.drawImage(img_memory[11], 118, 197);
-	background.drawImage(img_memory[8], 218, 197);	
-	background.drawImage(img_memory[9], 118, 97);	
-	background.drawImage(img_memory[10], 118, 297);	
+	background.drawImage(img_memory[7], 218, 197);	
+	background.drawImage(img_memory[7], 118, 97);	
+	background.drawImage(img_memory[7], 118, 297);	
 }
 
 function Put_squares()

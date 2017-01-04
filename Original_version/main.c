@@ -80,6 +80,16 @@ unsigned short pts_live = 0;
 unsigned short go_time = 0;
 unsigned char black_transition_alpha = 0;
 
+unsigned short time_score_up = 0;
+char text_score_show[32];
+
+struct text_str
+{
+	unsigned char x;
+	unsigned short y;
+} text_bonus_point;
+
+
 /*
  * 
  * Main loop
@@ -189,15 +199,50 @@ void add_allsprites()
 	// Press start button
 	Load_Image(6,start_img,1);
 	
-	Load_Image(7,block_left_img,1);
+	Load_Image(7,block_small_img,1);
 	Load_Image(8,heart_img,1);
-	Load_Image(9,block_right_img,1);
-	Load_Image(10,block_up_img,1);
-	Load_Image(11,block_down_img,1);
 	Load_Image(12,block_img,1);
+	
 	Load_Image(13,hand_anim_img,1);
 	Load_Image(14,inst_img,1);
 	Load_Image(15,copyright_img,1);
+	Load_Image(16,font_img,1);
+}
+
+void Print_text(unsigned short x, unsigned short y, char *text_ex)
+{
+	unsigned short i = 0;
+	for (i=0;text_ex[i]!='\0';i++)
+	{
+		Put_sprite(16, x + (16 * i), y, 8, 8, text_ex[i]-33, 2);
+	}
+}
+
+void Show_Up_Score()
+{
+	static short y_text = 0;
+	static unsigned char time_flash = 0;
+	
+	if (time_score_up > 0)
+	{
+		if (time_flash < 5) Print_text(text_bonus_point.x, text_bonus_point.y+y_text, text_score_show); 
+		if (time_flash > 10) time_flash = 0;
+		
+		time_score_up++;
+		if (y_text > -16) y_text--;
+		else
+		{
+			time_flash++;
+		}
+		
+		if (time_score_up > 60) 
+		{
+			y_text = 0;
+			time_flash = 0;
+			time_score_up = 0;
+		}
+	}
+	
 }
 
 void Show_highscore()
@@ -284,9 +329,9 @@ void Put_slots()
 {
 	Put_image(7, 118-100, 197, 2);
 	Put_image(12, 118, 197, 1);
-	Put_image(9, 118+100, 197, 2);
-	Put_image(10, 118, 197-100, 2);
-	Put_image(11, 118, 197+100, 2);
+	Put_image(7, 118+100, 197, 2);
+	Put_image(7, 118, 197-100, 2);
+	Put_image(7, 118, 197+100, 2);
 }
 
 void Put_score_lives()
@@ -300,7 +345,7 @@ void Put_score_lives()
 	}
 	
 	//	Lives_spr
-	Put_image(8, 120, 424, 5);
+	Put_image(8, 120, 424, 2);
 	Put_sprite(5, 172, 432, 10, 10, lives, 2);
 }
 
@@ -378,6 +423,7 @@ inline void Show_Game()
 	Put_score_lives();
 	Put_time();
 	Put_hands();
+	Show_Up_Score();
 
 	/* Gameplay, increase difficulty as player progresses */
 	if (lvl_struct.exp > 100+(lvl_struct.level*15))
@@ -428,7 +474,7 @@ inline void Show_Instructions()
  * 
 */
 
-unsigned short check_square_score(unsigned char* square_tmp)
+unsigned short check_square_score(unsigned char* square_tmp, unsigned char spot)
 {
 	// Check if all squares are green
 	unsigned char i;
@@ -443,6 +489,7 @@ unsigned short check_square_score(unsigned char* square_tmp)
 			square.chain += 1;
 			score_togive = 300*square.chain;
 			Play_SFX(7);
+			Set_Show_Score(score_togive, spot);
 			return score_togive;
 		}
 	}
@@ -450,7 +497,41 @@ unsigned short check_square_score(unsigned char* square_tmp)
 	square.chain = 0;
 	lvl_struct.exp = lvl_struct.exp + 25;
 	pts_live += 30;
+	Set_Show_Score(30, spot);
 	return 30;
+}
+
+void Set_Show_Score(unsigned int score, unsigned char spot)
+{
+	unsigned char text_x = 0;
+	snprintf(text_score_show, sizeof(text_score_show), "+%d pts", score);
+	if (score > 99) text_x = 7;
+	
+	switch(spot)
+	{
+		// Left
+		case 0:
+			text_bonus_point.x = 35-text_x;
+			text_bonus_point.y = 232;
+		break;
+		// Right
+		case 1:
+			text_bonus_point.x = 235-text_x;
+			text_bonus_point.y = 232;
+		break;
+		// Up
+		case 2:
+			text_bonus_point.x = 135-text_x;
+			text_bonus_point.y = 130;
+		break;
+		// Down
+		case 3:
+			text_bonus_point.x = 135-text_x;
+			text_bonus_point.y = 320;
+		break;
+	}
+
+	time_score_up = 1;
 }
 
 unsigned char touch_sqr(unsigned short x, unsigned short x2, unsigned short y, unsigned short y2)
@@ -520,7 +601,7 @@ void Move_Square()
 			
 			if (up_spot[0] > 0 && up_spot[1] > 0 && up_spot[2] > 0 && up_spot[3] > 0)
 			{
-				sqr_score_filled = check_square_score(up_spot);
+				sqr_score_filled = check_square_score(up_spot,2);
 				for(i=0;i<4;i++) 
 				{
 					up_spot[i] = 0;
@@ -554,7 +635,7 @@ void Move_Square()
 			
 			if (down_spot[0] > 0 && down_spot[1] > 0 && down_spot[2] > 0 && down_spot[3] > 0)
 			{
-				sqr_score_filled = check_square_score(down_spot);
+				sqr_score_filled = check_square_score(down_spot,3);
 				for(i=0;i<4;i++) 
 				{
 					down_spot[i] = 0;
@@ -588,7 +669,7 @@ void Move_Square()
 
 			if (left_spot[0] > 0 && left_spot[1] > 0 && left_spot[2] > 0 && left_spot[3] > 0)
 			{
-				sqr_score_filled = check_square_score(left_spot);
+				sqr_score_filled = check_square_score(left_spot,0);
 				for(i=0;i<4;i++) 
 				{
 					left_spot[i] = 0;
@@ -622,7 +703,7 @@ void Move_Square()
 			
 				if (right_spot[0] > 0 && right_spot[1] > 0 && right_spot[2] > 0 && right_spot[3] > 0)
 				{
-					sqr_score_filled = check_square_score(right_spot);
+					sqr_score_filled = check_square_score(right_spot,1);
 					for(i=0;i<4;i++) 
 					{
 						right_spot[i] = 0;
@@ -821,10 +902,10 @@ void Load_Sounds()
 	Load_SFX(6, move4_sfx);
 	Load_SFX(7, fullsqr_sfx);
 	
-	Load_SFX(8, "upleft.wav");
-	Load_SFX(9, "upright.wav");
-	Load_SFX(10, "downleft.wav");
-	Load_SFX(11, "downright.wav");
+	Load_SFX(8, upleft_sfx);
+	Load_SFX(9, upright_sfx);
+	Load_SFX(10, downleft_sfx);
+	Load_SFX(11, downright_sfx);
 }
 
 /*

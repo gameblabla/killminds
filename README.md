@@ -15,7 +15,7 @@ In September 2016, i have decided to enhance it for mobile devices and this is t
 Killminds is a clone of SupraKillMinds for Sega Genesis by Jack Nolddor, with some improvements and changes to the gameplay.
 SupraKillminds in itself was too inspired by Quartet, another similar puzzle game.
 
-KillMinds was released on September 20, 2016 for Android and should soon be available for Sailfish OS on September 23, 2016.
+KillMinds was released on September 20, 2016 for Android and Sailfish OS on September 23, 2016.
 Other platforms include the 3DO, the TI Nspire CX and the NUON.
 
 The goal is simple : fill the 4 slots with a square given to you.

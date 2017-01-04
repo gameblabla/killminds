@@ -1,7 +1,7 @@
 Name: harbour-killminds
 Summary: The ultimate Puzzle game !
-Version: 1.0
-Release: 1
+Version: 1.1
+Release: 2
 Group: Applications
 License: LICENSE
 URL: https://gameblabla.nl
@@ -13,7 +13,7 @@ BuildRequires: pkgconfig(glesv2)
 #BuildRequires: pkgconfig(openal)
 
 %description
-The ultimate Puzzle game !
+The ultimate Puzzle game that will blow your mind !
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -38,10 +38,7 @@ make -f Makefile.sail install
 %{_datadir}/%{name}/back.bmp
 %{_datadir}/%{name}/background.bmp
 %{_datadir}/%{name}/block.bmp
-%{_datadir}/%{name}/block_down.bmp
-%{_datadir}/%{name}/block_left.bmp
-%{_datadir}/%{name}/block_right.bmp
-%{_datadir}/%{name}/block_up.bmp
+%{_datadir}/%{name}/smallblock.bmp
 %{_datadir}/%{name}/copyright.bmp
 %{_datadir}/%{name}/hand_anim.bmp
 %{_datadir}/%{name}/heart.bmp

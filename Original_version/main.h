@@ -9,34 +9,44 @@
 	without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
 	See the GAMEBLABLA's VIDEO GAME PUBLIC LICENSE for more details.
 */
+#ifdef ANDROID
+#define KILLMINDS_DATA_PATH ""
+#elif defined(SELFISHOS)
+#define KILLMINDS_DATA_PATH ""
+#else
+#define KILLMINDS_DATA_PATH "data/"
+#endif
 
-#define title_img "title.bmp"
-#define all_img "all.bmp"
-#define ready_img "ready.bmp"
-#define score_img "score.bmp"
-#define start_img "startbutton.bmp"
-#define background_img "back.bmp"
+#define title_img KILLMINDS_DATA_PATH"title.bmp"
+#define all_img KILLMINDS_DATA_PATH"all.bmp"
+#define ready_img KILLMINDS_DATA_PATH"ready.bmp"
+#define score_img KILLMINDS_DATA_PATH"score.bmp"
+#define start_img KILLMINDS_DATA_PATH"startbutton.bmp"
+#define background_img KILLMINDS_DATA_PATH"back.bmp"
 
-#define heart_img "heart.bmp"
-#define block_up_img "block_up.bmp"
-#define block_left_img "block_left.bmp"
-#define block_right_img "block_right.bmp"
-#define block_down_img "block_down.bmp"
-#define block_img "block.bmp"
-#define hand_anim_img "hand_anim.bmp"
-#define inst_img "inst.bmp"
-#define trophee_img "trophees.bmp"
-#define copyright_img "copyright.bmp"
-	
-#define gameover_sfx "gameover.wav"
-#define miss_sfx "miss.wav"
-#define move_sfx "move1.wav"
+#define heart_img KILLMINDS_DATA_PATH"heart.bmp"
+#define block_small_img KILLMINDS_DATA_PATH"smallblock.bmp"
+#define block_img KILLMINDS_DATA_PATH"block.bmp"
+#define hand_anim_img KILLMINDS_DATA_PATH"hand_anim.bmp"
+#define inst_img KILLMINDS_DATA_PATH"inst.bmp"
+#define trophee_img KILLMINDS_DATA_PATH"trophees.bmp"
+#define copyright_img KILLMINDS_DATA_PATH"copyright.bmp"
+#define font_img KILLMINDS_DATA_PATH"font.bmp"
 
-#define move2_sfx "move2.wav"
-#define move3_sfx "move3.wav"
-#define move4_sfx "move4.wav"
+#define gameover_sfx KILLMINDS_DATA_PATH"gameover.wav"
+#define miss_sfx KILLMINDS_DATA_PATH"miss.wav"
+#define move_sfx KILLMINDS_DATA_PATH"move1.wav"
 
-#define fullsqr_sfx "fullsquare.wav"
+#define move2_sfx KILLMINDS_DATA_PATH"move2.wav"
+#define move3_sfx KILLMINDS_DATA_PATH"move3.wav"
+#define move4_sfx KILLMINDS_DATA_PATH"move4.wav"
+
+#define fullsqr_sfx KILLMINDS_DATA_PATH"fullsquare.wav"
+
+#define upleft_sfx KILLMINDS_DATA_PATH"upleft.wav"
+#define upright_sfx KILLMINDS_DATA_PATH"upright.wav"
+#define downleft_sfx KILLMINDS_DATA_PATH"downleft.wav"
+#define downright_sfx KILLMINDS_DATA_PATH"downright.wav"
 
 // Initialize game
 void InitializeGame();
@@ -79,7 +89,9 @@ void Update_highscore();
 
 short rand_a_b(short a, short b);
 unsigned char touch_sqr(unsigned short x, unsigned short x2, unsigned short y, unsigned short y2);
-unsigned short check_square_score(unsigned char* square_tmp);
+unsigned short check_square_score(unsigned char* square_tmp, unsigned char spot);
+
+void Set_Show_Score(unsigned int score, unsigned char spot);
 
 void Put_hands();
 void Put_squares();
