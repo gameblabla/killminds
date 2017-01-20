@@ -1,12 +1,12 @@
 CC = gcc
 
-CFLAGS = -O2 -I/usr/include/SDL2 -DSELFISHOS -DHOMEDIR
+CFLAGS = -O2 -I/usr/include/SDL2 -DSELFISHOS -DHOMEDIR -Isrc
 #-DENABLE_OPENAL -Igorilla-audio/include
 LDFLAGS = -lSDL2 -lm -s -flto
 DEFINES = -Wall
 OUTPUT = harbour-killminds
 
-SOURCES = main.c wrapper_sail.c
+SOURCES = src/main.c src/sailfish/wrapper.c
 #./gorilla-audio/src/ga.c \
 #./gorilla-audio/src/gau.c \
 #./gorilla-audio/src/ga_stream.c \

@@ -11,7 +11,8 @@
 */
 
 /*
- *	This javascript version is  
+ *	This javascript version is based on the C. 
+ * 	It wasn't a straightfoward port though...
  * 
 */
 
@@ -75,6 +76,8 @@ var upscore_y_text = 0;
 var upscore_time_flash = 0;
 var upscore_texttoshow_x = 0;
 var upscore_texttoshow_y = 0;
+var text_score_show = "";
+var time_score_up = 0;
 
 window.onload = function() 
 {
@@ -141,13 +144,14 @@ window.onload = function()
 	img_memory[6].src = 'data/startbutton.png';
 	
 	img_memory[7].src = 'data/smallblock.png';
+	
+	img_memory[8].src = 'data/font.png';
+	
 	img_memory[11].src = 'data/block.png';
 	img_memory[13].src = 'data/hand_anim.png';
 	img_memory[14].src = 'data/inst.png';
 	img_memory[15].src = 'data/copyright.png';
 	img_memory[16].src = 'data/back.png';
-
-
 
 	(function (window) 
 	{
@@ -262,12 +266,27 @@ function Titlescreen()
 	}
 }
 
+/* Print_text, Show_Up_Score, Set_Show_Score are used simply to show how much points you got
+ * after clearing a field.
+ * ikr ?
+*/
+
+function Print_text(x, y, text_ex)
+{
+	// text_return is set to 1 so it does not trigger the loop's condition
+	var i, text_return = 1;
+	for (i=0;text_return > 0;i++)
+	{
+		text_return = text_ex.charCodeAt(i);
+		background.drawImage(img_memory[8], 16*(text_return-33), 0, 16, 16, x + ((32) * i), y, 16, 16);
+	}
+}
+
 function Show_Up_Score()
 {
-	
 	if (time_score_up > 0)
 	{
-		if (upscore_time_flash < 5) Print_text(text_bonus_point.x, text_bonus_point.y+upscore_y_text, text_score_show); 
+		if (upscore_time_flash < 5) Print_text(upscore_texttoshow_x, upscore_texttoshow_y+upscore_y_text, text_score_show); 
 		if (upscore_time_flash > 10) upscore_time_flash = 0;
 		
 		time_score_up++;
@@ -286,6 +305,41 @@ function Show_Up_Score()
 	}
 	
 }
+
+/* The default positions (compared to the C version) had to be tweaked due to the function charCodeAt */
+function Set_Show_Score(score, spot)
+{
+	var text_x = 0;
+	text_score_show = "+"+score+"pts";
+	if (score > 99) text_x = 7;
+	
+	switch(spot)
+	{
+		// Left
+		case 0:
+			upscore_texttoshow_x = 20-text_x;
+			upscore_texttoshow_y = 232;
+		break;
+		// Right
+		case 1:
+			upscore_texttoshow_x = 220-text_x;
+			upscore_texttoshow_y = 232;
+		break;
+		// Up
+		case 2:
+			upscore_texttoshow_x = 120-text_x;
+			upscore_texttoshow_y = 130;
+		break;
+		// Down
+		case 3:
+			upscore_texttoshow_x = 120-text_x;
+			upscore_texttoshow_y = 330;
+		break;
+	}
+
+	time_score_up = 1;
+}
+
 
 function Show_highscore()
 {
@@ -523,7 +577,7 @@ function Move_Square()
 			
 			if (up_spot[0] > 0 && up_spot[1] > 0 && up_spot[2] > 0 && up_spot[3] > 0)
 			{
-				sqr_score_filled = check_square_score(up_spot[0],up_spot[1],up_spot[2],up_spot[3]);
+				sqr_score_filled = check_square_score(up_spot[0],up_spot[1],up_spot[2],up_spot[3], 2);
 				for (i=0, il=4; i<il; i++)
 				//for(i=0;i<4;i++) 
 				{
@@ -559,7 +613,7 @@ function Move_Square()
 			
 			if (down_spot[0] > 0 && down_spot[1] > 0 && down_spot[2] > 0 && down_spot[3] > 0)
 			{
-				sqr_score_filled = check_square_score(down_spot[0],down_spot[1],down_spot[2],down_spot[3]);
+				sqr_score_filled = check_square_score(down_spot[0],down_spot[1],down_spot[2],down_spot[3], 3);
 				for (i=0, il=4; i<il; i++)
 				//for(i=0;i<4;i++) 
 				{
@@ -594,7 +648,7 @@ function Move_Square()
 
 			if (left_spot[0] > 0 && left_spot[1] > 0 && left_spot[2] > 0 && left_spot[3] > 0)
 			{
-				sqr_score_filled = check_square_score(left_spot[0],left_spot[1],left_spot[2],left_spot[3]);
+				sqr_score_filled = check_square_score(left_spot[0],left_spot[1],left_spot[2],left_spot[3], 0);
 				for (i=0, il=4; i<il; i++)
 				//for(i=0;i<4;i++) 
 				{
@@ -629,7 +683,7 @@ function Move_Square()
 			
 				if (right_spot[0] > 0 && right_spot[1] > 0 && right_spot[2] > 0 && right_spot[3] > 0)
 				{
-					sqr_score_filled = check_square_score(right_spot[0],right_spot[1],right_spot[2],right_spot[3]);
+					sqr_score_filled = check_square_score(right_spot[0],right_spot[1],right_spot[2],right_spot[3], 1);
 					for (i=0, il=4; i<il; i++)
 					//for(i=0;i<4;i++) 
 					{
@@ -669,7 +723,7 @@ function touch_sqr(x, x2, y, y2)
 		return 0;
 }
 
-function check_square_score(a, b, c, d)
+function check_square_score(a, b, c, d, spot)
 {
 	// Check if all squares are green
 	var i, il;
@@ -692,6 +746,7 @@ function check_square_score(a, b, c, d)
 			square_chain += 1;
 			score_togive = 300*square_chain;
 			sound[6].play();
+			Set_Show_Score(score_togive, spot);
 			return score_togive;
 		}
 	}
@@ -699,6 +754,7 @@ function check_square_score(a, b, c, d)
 	square_chain = 0;
 	lvl_struct_exp = lvl_struct_exp + 25;
 	pts_live += 30;
+	Set_Show_Score(30, spot);
 	return 30;
 }
 
@@ -736,6 +792,7 @@ function Show_Game()
 	Put_score_lives();
 	Put_time();
 	Put_hands();
+	Show_Up_Score();
 
 	if (lvl_struct_exp > 100+(lvl_struct_level*15))
 	{

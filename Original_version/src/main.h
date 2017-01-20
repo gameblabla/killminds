@@ -100,6 +100,6 @@ void Put_slots();
 inline void Put_time();
 void Reload_time();
 
-inline void Show_Instructions();
+static void Show_Instructions();
 
 void Show_copyright();

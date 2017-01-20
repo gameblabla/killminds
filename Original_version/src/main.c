@@ -444,7 +444,7 @@ inline void Show_Game()
  * The introduction screen at the very beginning
  * 
 */
-inline void Show_Instructions()
+static void Show_Instructions()
 {
 	Put_slots();
 	Put_squares();

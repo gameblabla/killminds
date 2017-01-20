@@ -33,11 +33,23 @@ Will you be able to master this game ? Find out in KillMinds !
 Compilation
 =============
 
+=======
+Android
+=======
+
 The build system for Android is not yet provided, but basically it's this :
-On Android, it uses JNI : SDL2 and SDL2_mixer are compiled as shared libraries.
+
+it uses JNI and SDL2/SDL2_mixer are compiled as shared libraries.
+
 Then, it is simply a matter of using ndk-build and packing things up with ant.
 
-For Sailfish OS, you have everything you need up but you need to have the official SailfishOS SDK.
+============
+Sailfish OS
+============
+you have everything you need up but you need to have the official SailfishOS SDK.
+
 There are some bugs for the ARM binary however...
+
 Run sb2 -t SailfishOS-armv7hl make -f Makefile.sail before using the commands from "Compilation_sailfish.txt".
+
 You should get a RPM file in a newly-created folder RPMS.

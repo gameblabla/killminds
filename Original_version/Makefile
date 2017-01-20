@@ -1,12 +1,12 @@
 CC = gcc
 
-CFLAGS = -O2 -I./WRAPPER -I/usr/include/SDL2 -DHOMEDIR
+CFLAGS = -O2 -I./src -I/usr/include/SDL2 -DHOMEDIR
 LDFLAGS = -lSDL2 -lm -lSDL2_mixer
 
 DEFINES = -Wall
 OUTPUT = killminds.elf
 
-SOURCES = main.c wrapper.c
+SOURCES = src/main.c src/sdl2/wrapper.c
 OBJS = ${SOURCES:.c=.o}
 
 ${OUTPUT}:${OBJS}
