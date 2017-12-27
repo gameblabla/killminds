@@ -1,4 +1,3 @@
-===========
 KillMinds
 =========== 
 
@@ -28,12 +27,9 @@ The more you progress, the harder it gets, to the point of being almost impossib
 
 Will you be able to master this game ? Find out in KillMinds !
 
-
-=============
 Compilation
-=============
+===========
 
-=======
 Android
 =======
 
@@ -43,7 +39,6 @@ it uses JNI and SDL2/SDL2_mixer are compiled as shared libraries.
 
 Then, it is simply a matter of using ndk-build and packing things up with ant.
 
-============
 Sailfish OS
 ============
 you have everything you need up but you need to have the official SailfishOS SDK.
